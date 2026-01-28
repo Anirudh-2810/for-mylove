@@ -2,70 +2,134 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- mobile first… learned this the hard way -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>A note for you, my love</title>
+
+    <!-- Fonts felt right for a handwritten / letter vibe -->
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+
     <style>
+        /* Color variables — easier to tweak later if I change my mind */
         :root {
-            --bg-dark-pink: #7a3535; 
-            --card-bg: #fff5f5;
-            --accent-red: #a34646;
-            --text-dark: #2d1b1b;
+            --bg-dark-pink: #7a3535;   /* background of the page */
+            --paper-bg: #fff5f5;      /* card / letter background */
+            --soft-red: #a34646;
+            --ink-dark: #2d1b1b;
         }
 
         body {
-            margin: 0; background-color: var(--bg-dark-pink);
-            font-family: 'Lora', serif; color: var(--text-dark);
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; padding: 20px; overflow: hidden; /* Prevents scrollbars during heart shower */
+            margin: 0;
+            background-color: var(--bg-dark-pink);
+            font-family: 'Lora', serif;
+            color: var(--ink-dark);
+
+            /* center everything without overthinking it */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            min-height: 100vh;
+            padding: 20px;
+
+            /* prevents scrollbars when hearts fly everywhere */
+            overflow: hidden;
         }
 
         .card {
-            background: var(--card-bg);
-            width: 100%; max-width: 420px;
-            border-radius: 12px; border: 1px solid rgba(163, 70, 70, 0.3);
-            padding: 50px 35px; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            text-align: center; position: relative; z-index: 10;
+            background: var(--paper-bg);
+            width: 100%;
+            max-width: 420px;
+
+            border-radius: 12px;
+            border: 1px solid rgba(163, 70, 70, 0.3);
+
+            padding: 50px 35px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+
+            text-align: center;
+            position: relative;
+            z-index: 10;
+
             animation: fadeIn 1.8s ease-in-out;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* simple fade — nothing fancy */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
         .letter-slip {
-            text-align: left; background: white; padding: 30px;
-            border: 1px solid #eee; position: relative;
-            box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.05);
+            text-align: left;
+            background: white;
+            padding: 30px;
+
+            border: 1px solid #eee;
+            position: relative;
+
+            /* slight offset to make it feel like real paper */
+            box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.05);
         }
 
         .para-text {
             font-family: 'Special Elite', cursive;
-            font-size: 1.05rem; line-height: 1.8; color: #333;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+
+            /* keeps line breaks exactly as written */
             white-space: pre-wrap;
         }
 
         .signature {
             font-family: 'Special Elite', cursive;
-            color: var(--accent-red); font-size: 1.2rem;
-            margin-top: 30px; text-align: right;
+            color: var(--soft-red);
+            font-size: 1.2rem;
+
+            margin-top: 30px;
+            text-align: right;
         }
 
-        /* Interactive Wax Seal */
+        /* Wax seal — honestly my favorite part */
         .wax-seal {
-            width: 70px; height: 70px;
+            width: 70px;
+            height: 70px;
+
             background: #8b2626;
             border-radius: 50%;
+
             margin: 40px auto 0;
             position: relative;
-            display: flex; align-items: center; justify-content: center;
-            color: rgba(255,255,255,0.7); font-size: 1.8rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4), inset 0 0 15px rgba(0,0,0,0.6);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: rgba(255,255,255,0.7);
+            font-size: 1.8rem;
+
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.4),
+                inset 0 0 15px rgba(0,0,0,0.6);
+
             border: 3px solid #7a1f1f;
             cursor: pointer;
-            transition: transform 0.2s;
             user-select: none;
+
+            transition: transform 0.2s;
         }
 
-        .wax-seal:active { transform: scale(0.9); }
+        .wax-seal:active {
+            transform: scale(0.9); /* press effect */
+        }
 
         .wax-seal::after {
             content: 'T';
@@ -74,26 +138,39 @@
 
         .footer-date {
             font-family: 'Special Elite', cursive;
-            font-size: 0.7rem; color: var(--accent-red);
-            margin-top: 15px; opacity: 0.5; letter-spacing: 2px;
+            font-size: 0.7rem;
+            color: var(--soft-red);
+
+            margin-top: 15px;
+            opacity: 0.5;
+            letter-spacing: 2px;
         }
 
-        /* Heart Animation Styles */
+        /* floating hearts */
         .heart-fly {
             position: fixed;
             bottom: -50px;
-            pointer-events: none;
+
+            pointer-events: none; /* hearts shouldn’t block clicks */
             z-index: 999;
-            animation: moveUp linear forwards;
+
+            animation: floatUp linear forwards;
             color: #d17a7a;
         }
 
-        @keyframes moveUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-110vh) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="card">
@@ -103,43 +180,54 @@ Dear Tanisha,
 
 I was just sitting here thinking about everything. The first time i saw you ,its a permanent loop in my head. Ngl my favorite place is being next to you, and favorite memory is every moment we've shared together.
 
-2026 is going to be our year. I don’t just want to look at photos or send digital notes; I want to be there. Keep this note as a reminder that I’m always on your team. Whether it’s a good day, a bad day, or a day where everything feels messy—I’m the one person you never have to worry about losing. I’m in this for the long haul.
+2026 is going to be our year. I don’t just want to look at photos or send digital notes; I want to be there. Keep this note as a reminder that I’m always on your team. Whether it’s a good day, a bad day, or a day where everything feels messy—I’m the one person you never have to worry about losing. My spot next to you is permanent darling
 
-I’m lucky to have you. My love
+I'll always love you!!
             </div>
         </div>
 
         <div class="signature">— Daddy</div>
 
-        <div class="wax-seal" onclick="createHearts()"></div>
+        <!-- click me -->
+        <div class="wax-seal" onclick="dropHearts()"></div>
         <div class="footer-date">PRESS IT MOMMY • EST. 2026</div>
     </div>
 
     <script>
-        function createHearts() {
-            // Shower 20 hearts at once when clicked
+        // Creates a small heart shower when the seal is pressed
+        function dropHearts() {
+            // 20 felt like a good number, not too much
             for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.classList.add('heart-fly');
-                    heart.innerHTML = '❤';
-                    
-                    // Random horizontal position
-                    heart.style.left = Math.random() * 100 + 'vw';
-                    
-                    // Random speed and size
-                    const duration = Math.random() * 2 + 2;
-                    heart.style.animationDuration = duration + 's';
-                    heart.style.fontSize = Math.random() * 20 + 15 + 'px';
-                    heart.style.opacity = Math.random() * 0.5 + 0.5;
 
-                    document.body.appendChild(heart);
-                    
-                    // Remove heart after animation ends
-                    setTimeout(() => { heart.remove(); }, duration * 1000);
-                }, i * 50); // Slight delayy
+                // slight stagger so it doesn’t look robotic
+                setTimeout(() => {
+                    const heartEl = document.createElement('div');
+                    heartEl.className = 'heart-fly';
+                    heartEl.innerHTML = '❤';
+
+                    // random horizontal position across screen
+                    heartEl.style.left = (Math.random() * 100) + 'vw';
+
+                    // random size + speed so they feel organic
+                    const flyTime = Math.random() * 2 + 2;
+                    heartEl.style.animationDuration = flyTime + 's';
+                    heartEl.style.fontSize = (Math.random() * 20 + 15) + 'px';
+
+                    // slight opacity variation
+                    heartEl.style.opacity = Math.random() * 0.5 + 0.5;
+
+                    document.body.appendChild(heartEl);
+
+                    // clean up after animation ends
+                    setTimeout(() => {
+                        heartEl.remove();
+                    }, flyTime * 1000);
+
+                }, i * 50); // tiny delay between hearts
             }
         }
+
+        // might add sound here later… not sure yet
     </script>
 
 </body>
