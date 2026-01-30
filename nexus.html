@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus | Tanisha</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Dancing+Script:wght@600&family=Inter:wght@300;400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Dancing+Script:wght@600&family=Inter:ital,wght@0,300;1,300&display=swap');
 
         :root {
             --soft-pink: #fb7185;
             --deep-red: #2d050a;
             --bg-dark: #050505;
             --spotify-green: #1DB954;
+            --glow-pink: rgba(251, 113, 133, 0.5);
         }
 
         body {
@@ -26,80 +27,71 @@
             overflow: hidden;
         }
 
-        #container { text-align: center; width: 90%; max-width: 500px; z-index: 10; position: relative; }
-
-        /* --- Top Quote Display (Centered) --- */
+        /* --- Sophisticated Top Quotes (Centered) --- */
         #top-quote-display {
             position: fixed;
-            top: 40px;
+            top: 50px;
             left: 0;
             right: 0;
             text-align: center;
             font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 300;
             font-style: italic;
+            color: #fff;
             opacity: 0;
             transition: opacity 1.5s ease;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             z-index: 100;
-            padding: 0 20px;
+            padding: 0 30px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
-        /* --- Sophisticated Loading Screen --- */
-        #loading-screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
-        .system-id { font-size: 0.6rem; letter-spacing: 5px; opacity: 0.5; margin-bottom: 30px; }
-        #status-text { font-size: 0.75rem; font-weight: bold; color: #fff; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
-        .bar-bg { width: 250px; height: 1px; background: rgba(255,255,255,0.05); position: relative; margin: 20px 0; }
-        .bar-fill { width: 0%; height: 100%; background: var(--soft-pink); box-shadow: 0 0 15px var(--soft-pink); transition: width 0.2s; }
-        
-        /* --- Spotify Card (Right-Side Middle) --- */
+        /* --- Spotify Card (Right-Middle) --- */
         .spotify-card {
             position: fixed; 
-            right: 30px; 
+            right: 40px; 
             top: 50%; 
             transform: translateY(-50%);
-            width: 240px; 
+            width: 260px; 
             background: rgba(255, 255, 255, 0.03); 
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-radius: 20px; 
+            border-radius: 24px; 
             padding: 25px;
             display: none; 
             z-index: 100; 
-            transition: 1s ease;
             text-align: left;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
         }
 
-        /* --- Main Content --- */
+        #container { text-align: center; width: 90%; max-width: 520px; z-index: 10; position: relative; }
+
+        /* --- Password Logic --- */
+        #pass-screen { display: block; opacity: 1; transition: opacity 1s; }
+        .pass-input { 
+            background: transparent; border: none; border-bottom: 2px solid var(--soft-pink);
+            color: #fff; font-family: 'Courier Prime', monospace; font-size: 1.8rem;
+            text-align: center; width: 180px; outline: none; margin-top: 30px; letter-spacing: 8px;
+        }
+
+        /* --- Content Layout --- */
         #main-content { display: none; opacity: 0; transition: opacity 2s ease; width: 100%; }
-        .card { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(251, 113, 133, 0.1); border-radius: 20px; padding: 30px; margin-bottom: 25px; text-align: left; }
-        .stat-val { font-size: 1.4rem; color: #fff; text-shadow: 0 0 10px rgba(251, 113, 133, 0.5); }
+        .card { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(251, 113, 133, 0.1); border-radius: 20px; padding: 35px; margin-bottom: 25px; text-align: left; }
+        .stat-val { font-size: 1.5rem; color: #fff; text-shadow: 0 0 15px var(--glow-pink); }
 
-        /* --- Buttons --- */
-        .btn-container { display: flex; gap: 12px; margin-top: 20px; }
-        .btn-action { flex: 1; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--soft-pink); color: var(--soft-pink); padding: 14px; border-radius: 12px; cursor: pointer; font-size: 0.65rem; letter-spacing: 1px; transition: 0.4s; font-family: 'Inter', sans-serif; font-weight: 600; }
-        .btn-action:hover { background: var(--soft-pink); color: #000; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(251, 113, 133, 0.2); }
+        .btn-action { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--soft-pink); color: var(--soft-pink); padding: 16px; border-radius: 14px; cursor: pointer; font-size: 0.7rem; letter-spacing: 1.5px; transition: 0.4s; font-family: 'Inter', sans-serif; font-weight: 600; text-transform: uppercase; }
+        .btn-action:hover { background: var(--soft-pink); color: #000; box-shadow: 0 10px 25px var(--glow-pink); transform: translateY(-2px); }
 
-        /* --- Letter Styling --- */
-        .letter-content { display: none; margin-top: 20px; color: #eee; font-size: 0.95rem; line-height: 1.8; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px; font-family: 'Inter', sans-serif; font-weight: 300; }
-        .cursive { font-family: 'Dancing Script', cursive; font-size: 2rem; color: #fff; }
-        .signature { margin-top: 30px; text-align: right; font-size: 1.8rem; color: #fff; font-family: 'Dancing Script', cursive; opacity: 0; }
+        .letter-content { display: none; margin-top: 25px; color: #eee; font-size: 1rem; line-height: 1.8; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 30px; font-family: 'Inter', sans-serif; font-weight: 300; }
+        .cursive { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #fff; }
+        .signature { margin-top: 35px; text-align: right; font-size: 2rem; color: #fff; font-family: 'Dancing Script', cursive; opacity: 0; transition: 2s; }
 
-        /* --- Floating Hearts --- */
-        .floating-heart {
-            position: fixed; bottom: -10%; color: var(--soft-pink); font-size: 24px;
-            user-select: none; pointer-events: none; z-index: 1000;
-            animation: floatUp 4s linear forwards;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
-        }
+        .floating-heart { position: fixed; bottom: -10%; color: var(--soft-pink); font-size: 24px; pointer-events: none; z-index: 1000; animation: floatUp 4s linear forwards; }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-115vh) scale(1.5); opacity: 0; } }
 
-        /* Mobile Optimization */
         @media (max-width: 900px) { 
-            .spotify-card { position: static; transform: none; width: 100%; margin: 20px 0; } 
+            .spotify-card { position: static; transform: none; width: 100%; margin: 30px 0; } 
             body { overflow-y: auto; }
             #top-quote-display { top: 20px; font-size: 0.75rem; }
         }
@@ -110,40 +102,38 @@
 <div id="top-quote-display">"I secretly hope it's you every time my phone rings."</div>
 
 <div id="spotify-sidebar" class="spotify-card">
-    <div style="font-size: 0.5rem; letter-spacing: 2px; color: var(--spotify-green); margin-bottom: 10px; font-weight: bold;">LINKED_AUDIO</div>
-    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; font-size: 0.7rem; color: #eee; border-radius: 10px; margin-bottom: 10px; line-height: 1.4; border-left: 2px solid var(--soft-pink);">
+    <div style="font-size: 0.55rem; letter-spacing: 3px; color: var(--spotify-green); margin-bottom: 12px; font-weight: bold;">SYNC_AUDIO_STREAM</div>
+    <div style="background: rgba(255, 255, 255, 0.06); padding: 18px; font-size: 0.8rem; color: #ddd; border-radius: 15px; margin-bottom: 15px; line-height: 1.6; border-left: 4px solid var(--soft-pink);">
         Tanisha, I'm going to miss you!! Always remember you've got a friend in me! Love, Anirudh
     </div>
-    <div style="font-weight: bold; color: #fff; font-size: 0.8rem; margin-bottom: 15px;">You've got a friend in me</div>
-    <a href="YOUR_SPOTIFY_BLEND_LINK" target="_blank" class="btn-action" style="display:block; text-align:center; text-decoration:none; border-color: var(--spotify-green); color: var(--spotify-green); font-size: 0.6rem; padding: 10px;">OPEN OUR BLEND</a>
+    <div style="color: #fff; font-weight: bold; font-size: 0.95rem; margin-bottom: 5px;">You've got a friend in me</div>
+    <div style="color: #888; font-size: 0.75rem; margin-bottom: 20px;">Randy Newman</div>
+    <a href="YOUR_SPOTIFY_BLEND_LINK" target="_blank" class="btn-action" style="display:block; text-align:center; text-decoration:none; border-color: var(--spotify-green); color: var(--spotify-green); font-size: 0.7rem;">OPEN OUR BLEND</a>
 </div>
 
 <div id="container">
-    <div id="loading-screen">
-        <div class="system-id">ANIRUDH_X_TANISHA // V.2026</div>
-        <div id="status-text">INITIALIZING...</div>
-        <div class="bar-bg"><div id="bar" class="bar-fill"></div></div>
+    <div id="pass-screen">
+        <div style="font-size: 0.75rem; letter-spacing: 5px; opacity: 0.6; text-transform: uppercase;">Security Gateway</div>
+        <input type="password" id="passInput" class="pass-input" placeholder="····" maxlength="4" oninput="checkPass()">
+        <div id="error-msg" style="margin-top: 20px; font-size: 0.65rem; color: var(--soft-pink); opacity: 0; letter-spacing: 1px;">AUTHENTICATION_FAILED</div>
     </div>
 
     <div id="main-content">
-        <div style="font-size: 45px; margin-bottom: 20px; filter: drop-shadow(0 0 15px var(--soft-pink));">❤️</div>
-        
+        <div style="font-size: 50px; margin-bottom: 25px; filter: drop-shadow(0 0 20px var(--soft-pink));">❤️</div>
         <div class="card">
             <div id="timer" class="stat-val">00d : 00h : 00m : 00s</div>
-            <div id="msgs" style="font-size: 0.7rem; color: #888; margin-top: 10px; letter-spacing: 1px;">0 MSGS SYNCHRONIZED</div>
-            <div id="calls" style="font-size: 0.7rem; color: #888; letter-spacing: 1px;">0 VOICE SESSIONS</div>
+            <div id="msgs" style="font-size: 0.75rem; color: #888; margin-top: 15px; letter-spacing: 1px; text-transform: uppercase;">Archive Synchronized</div>
         </div>
 
         <div class="card">
-            <div class="btn-container">
-                <button class="btn-action" style="border-color: #fff; color: #fff;" onclick="startHearts()">PRESS_FOR_LOVE</button>
-                <button class="btn-action" onclick="decryptLetter()">OPEN_LETTER</button>
+            <div style="display: flex; gap: 15px;">
+                <button class="btn-action" style="flex:1; border-color:#fff; color:#fff;" onclick="startHearts()">PRESS_FOR_LOVE</button>
+                <button class="btn-action" style="flex:1;" onclick="decryptLetter()">OPEN_LETTER</button>
             </div>
-            
             <div id="actual-letter" class="letter-content">
                 <span class="cursive">Dear Tanisha,</span><br><br>
                 <div id="typewriter-text"></div>
-                <div id="signature" class="signature" style="transition: 2s;">— Daddy</div>
+                <div id="signature" class="signature">— Daddy</div>
             </div>
         </div>
     </div>
@@ -151,92 +141,73 @@
 
 <script>
     const start = new Date("2025-09-12T00:00:00").getTime();
-    
-    const statusSteps = [
-        "Locating favorite person...",
-        "Bypassing distance protocols...",
-        "Synchronizing memories...",
-        "Re-establishing heartbeat sync...",
-        "System Restored."
-    ];
+    const correctPass = "1209"; 
+
+    function checkPass() {
+        const input = document.getElementById('passInput').value;
+        if(input === correctPass) {
+            document.getElementById('pass-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('pass-screen').style.display = 'none';
+                revealMain();
+            }, 600);
+        } else if (input.length === 4) {
+            const err = document.getElementById('error-msg');
+            err.style.opacity = '1';
+            setTimeout(() => { 
+                err.style.opacity = '0'; 
+                document.getElementById('passInput').value = ''; 
+            }, 1200);
+        }
+    }
+
+    function revealMain() {
+        document.getElementById('main-content').style.display = 'block';
+        document.getElementById('spotify-sidebar').style.display = 'block';
+        document.getElementById('top-quote-display').style.opacity = '0.8';
+        setTimeout(() => { document.getElementById('main-content').style.opacity = "1"; }, 100);
+        setInterval(rotateTopQuote, 6000);
+    }
 
     const quotes = [
         "I secretly hope it's you every time my phone rings.",
         "You're the quiet thought that makes me smile.",
-        "Counting down the days until 'goodnight' is a whisper.",
         "Distance just makes me realise how much of 'me' is 'you'.",
-        "You are both my hardest 'goodbye' and my favourite 'hello'.",
+        "Counting down the days until 'goodnight' is a whisper.",
         "I'll always be on your team."
     ];
-
-    let prog = 0;
-    let stepIndex = 0;
-    const loadInt = setInterval(() => {
-        prog += 0.6;
-        document.getElementById('bar').style.width = prog + "%";
-        
-        if (Math.floor(prog) % 25 === 0 && stepIndex < statusSteps.length - 1) {
-            stepIndex++;
-            document.getElementById('status-text').innerText = statusSteps[stepIndex];
-        }
-
-        if(prog >= 100) {
-            clearInterval(loadInt);
-            setTimeout(revealMain, 500);
-        }
-    }, 40);
-
-    function revealMain() {
-        document.getElementById('loading-screen').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('loading-screen').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-            document.getElementById('spotify-sidebar').style.display = 'block';
-            document.getElementById('top-quote-display').style.opacity = '0.7';
-            setTimeout(() => { document.getElementById('main-content').style.opacity = "1"; }, 100);
-            setInterval(rotateTopQuote, 5000);
-        }, 500);
-    }
 
     function rotateTopQuote() {
         const qElem = document.getElementById('top-quote-display');
         qElem.style.opacity = 0;
-        setTimeout(() => {
-            qElem.innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
-            qElem.style.opacity = 0.7;
+        setTimeout(() => { 
+            qElem.innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`; 
+            qElem.style.opacity = 0.8; 
         }, 1500);
     }
 
-    const letterText = `I was just sitting here thinking about everything. The first time i saw you ,its a permanent loop in my head. Ngl my favorite place is being next to you, and favorite memory is every moment we've shared together.\n\n2026 is going to be our year. I don’t just want to look at photos or send digital notes; I want to be there. Keep this note as a reminder that I’m always on your team. Whether it’s a good day, a bad day, or a day where everything feels messy—I’m the one person you never have to worry about losing. My spot next to you is permanent darling.\n\nI'll always love you!!`;
+    const letterText = `I was just sitting here thinking about everything. The first time i saw you, it's a permanent loop in my head. Ngl my favorite place is being next to you, and favorite memory is every moment we've shared together.\n\n2026 is going to be our year. I don’t just want to look at photos or send digital notes; I want to be there. Keep this note as a reminder that I’m always on your team. Whether it’s a good day, a bad day, or a day where everything feels messy—I’m the one person you never have to worry about losing. My spot next to you is permanent darling.\n\nI'll always love you!!`;
 
     function decryptLetter() {
         document.querySelector('.btn-action[onclick="decryptLetter()"]').style.display = 'none';
         document.getElementById('actual-letter').style.display = 'block';
         let i = 0;
         const type = setInterval(() => {
-            if (letterText.charAt(i) === "\n") {
-                document.getElementById('typewriter-text').innerHTML += "<br>";
-            } else {
-                document.getElementById('typewriter-text').innerHTML += letterText.charAt(i);
-            }
+            if (letterText.charAt(i) === "\n") { document.getElementById('typewriter-text').innerHTML += "<br>"; }
+            else { document.getElementById('typewriter-text').innerHTML += letterText.charAt(i); }
             i++;
-            if (i >= letterText.length) {
-                clearInterval(type);
-                document.getElementById('signature').style.opacity = '1';
+            if (i >= letterText.length) { 
+                clearInterval(type); 
+                document.getElementById('signature').style.opacity = '1'; 
             }
-        }, 50);
+        }, 45);
     }
 
-    function startHearts() {
-        for(let i=0; i<25; i++) {
-            setTimeout(createHeart, i * 120);
-        }
-    }
-
+    function startHearts() { for(let i=0; i<30; i++) { setTimeout(createHeart, i * 100); } }
     function createHeart() {
         const heart = document.createElement('div');
         heart.classList.add('floating-heart');
-        heart.innerHTML = ['❤️','💖','💗','💕'][Math.floor(Math.random()*4)];
+        heart.innerHTML = ['❤️','💖','✨','💕'][Math.floor(Math.random()*4)];
         heart.style.left = Math.random() * 100 + 'vw';
         heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
         document.body.appendChild(heart);
@@ -246,14 +217,11 @@
     function update() {
         const now = new Date().getTime();
         const diff = now - start;
-        const mins = diff / (1000 * 60);
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const s = Math.floor((diff % (1000 * 60)) / 1000);
         document.getElementById('timer').innerText = `${d}d : ${h}h : ${m}m : ${s}s`;
-        document.getElementById('msgs').innerText = Math.floor(mins * 0.243).toLocaleString() + " MSGS SYNCHRONIZED";
-        document.getElementById('calls').innerText = Math.floor(mins * 0.00243).toLocaleString() + " VOICE SESSIONS";
     }
     setInterval(update, 1000);
 </script>
