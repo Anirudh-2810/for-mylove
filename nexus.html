@@ -28,31 +28,33 @@
 
         #container { text-align: center; width: 90%; max-width: 500px; z-index: 10; position: relative; }
 
+        /* --- Top Quote Display (Post-Load) --- */
+        #top-quote-display {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: #fff;
+            font-style: italic;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            letter-spacing: 1px;
+            z-index: 100;
+        }
+
         /* --- Sophisticated Loading Screen --- */
         #loading-screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
-        
         .system-id { font-size: 0.6rem; letter-spacing: 5px; opacity: 0.5; margin-bottom: 30px; }
-        
         #status-text { font-size: 0.75rem; font-weight: bold; color: #fff; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
-        
         .bar-bg { width: 250px; height: 1px; background: rgba(255,255,255,0.05); position: relative; margin: 20px 0; }
         .bar-fill { width: 0%; height: 100%; background: var(--soft-pink); box-shadow: 0 0 15px var(--soft-pink); transition: width 0.2s; }
         
-        #status-quote { 
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem; 
-            color: #ccc; 
-            font-style: italic; 
-            max-width: 300px;
-            min-height: 50px;
-            opacity: 0.8;
-            margin-top: 15px;
-            line-height: 1.5;
-        }
-
         /* --- Spotify Card --- */
         .spotify-card {
-            position: fixed; right: 30px; top: 50%; transform: translateY(-50%);
+            position: fixed; right: 30px; bottom: 30px; /* Moved to bottom right for better layout */
             width: 240px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 25px;
             display: none; z-index: 100; transition: 1s ease;
@@ -65,7 +67,7 @@
 
         /* --- Buttons --- */
         .btn-container { display: flex; gap: 12px; margin-top: 20px; }
-        .btn-action { flex: 1; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--soft-pink); color: var(--soft-pink); padding: 14px; border-radius: 12px; cursor: pointer; font-size: 0.7rem; letter-spacing: 1px; transition: 0.4s; font-family: 'Inter', sans-serif; font-weight: 500; }
+        .btn-action { flex: 1; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--soft-pink); color: var(--soft-pink); padding: 14px; border-radius: 12px; cursor: pointer; font-size: 0.65rem; letter-spacing: 1px; transition: 0.4s; font-family: 'Inter', sans-serif; font-weight: 600; }
         .btn-action:hover { background: var(--soft-pink); color: #000; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(251, 113, 133, 0.2); }
         .btn-hearts { border-color: #fff; color: #fff; }
 
@@ -85,19 +87,20 @@
             100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
         }
 
-        @media (max-width: 900px) { .spotify-card { position: static; transform: none; width: 100%; margin: 20px 0; } }
+        @media (max-width: 900px) { .spotify-card { position: static; transform: none; width: 100%; margin: 20px 0; } body { overflow-y: auto; } }
     </style>
 </head>
 <body>
 
+<div id="top-quote-display">"Distance just makes me realise how much of 'me' is 'you'."</div>
+
 <div id="spotify-sidebar" class="spotify-card">
-    <div style="font-size: 0.6rem; letter-spacing: 2px; color: var(--spotify-green); margin-bottom: 10px;">NOW_PLAYING</div>
-    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; font-size: 0.75rem; color: #eee; border-radius: 10px; margin-bottom: 15px; line-height: 1.4;">
+    <div style="font-size: 0.5rem; letter-spacing: 2px; color: var(--spotify-green); margin-bottom: 10px;">NOW_PLAYING</div>
+    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; font-size: 0.7rem; color: #eee; border-radius: 10px; margin-bottom: 10px; line-height: 1.4;">
         Tanisha, I'm going to miss you!! Always remember you've got a friend in me! Love, Anirudh
     </div>
-    <div style="font-weight: bold; color: #fff; font-size: 0.9rem;">You've got a friend in me</div>
-    <div style="color: #888; font-size: 0.7rem; margin-bottom: 15px;">Randy Newman</div>
-    <a href="YOUR_SPOTIFY_BLEND_LINK" target="_blank" class="btn-action" style="display:block; text-align:center; text-decoration:none; border-color: var(--spotify-green); color: var(--spotify-green); font-size: 0.6rem;">OPEN OUR BLEND</a>
+    <div style="font-weight: bold; color: #fff; font-size: 0.8rem;">You've got a friend in me</div>
+    <a href="YOUR_SPOTIFY_BLEND_LINK" target="_blank" class="btn-action" style="display:block; text-align:center; text-decoration:none; border-color: var(--spotify-green); color: var(--spotify-green); font-size: 0.6rem; padding: 8px;">OPEN OUR BLEND</a>
 </div>
 
 <div id="container">
@@ -105,7 +108,6 @@
         <div class="system-id">ANIRUDH_X_TANISHA // V.2026</div>
         <div id="status-text">INITIALIZING...</div>
         <div class="bar-bg"><div id="bar" class="bar-fill"></div></div>
-        <div id="status-quote">Preparing the digital soul...</div>
     </div>
 
     <div id="main-content">
@@ -113,13 +115,13 @@
         
         <div class="card">
             <div id="timer" class="stat-val">00d : 00h : 00m : 00s</div>
-            <div id="msgs" style="font-size: 0.75rem; color: #888; margin-top: 10px; letter-spacing: 1px;">0 MSGS SYNCHRONIZED</div>
-            <div id="calls" style="font-size: 0.75rem; color: #888; letter-spacing: 1px;">0 VOICE SESSIONS</div>
+            <div id="msgs" style="font-size: 0.7rem; color: #888; margin-top: 10px; letter-spacing: 1px;">0 MSGS SYNCHRONIZED</div>
+            <div id="calls" style="font-size: 0.7rem; color: #888; letter-spacing: 1px;">0 VOICE SESSIONS</div>
         </div>
 
         <div class="card">
             <div class="btn-container">
-                <button class="btn-action btn-hearts" onclick="startHearts()">SHOW_HEARTS</button>
+                <button class="btn-action btn-hearts" onclick="startHearts()">PRESS_FOR_LOVE</button>
                 <button class="btn-action" onclick="decryptLetter()">OPEN_LETTER</button>
             </div>
             
@@ -135,68 +137,69 @@
 <script>
     const start = new Date("2025-09-12T00:00:00").getTime();
     
-    // Status Text logic
     const statusSteps = [
         "Locating favorite person...",
         "Bypassing distance protocols...",
         "Synchronizing 50,000+ memories...",
         "Re-establishing heartbeat sync...",
-        "Accessing core database...",
         "System Restored."
     ];
 
-    // Quote logic
     const quotes = [
         "I secretly hope it's you every time my phone rings.",
         "You're the quiet thought that makes me smile.",
         "Counting down the days until 'goodnight' is a whisper.",
         "Distance just makes me realise how much of 'me' is 'you'.",
-        "You are both my hardest 'goodbye' and my favourite 'hello'."
+        "You are both my hardest 'goodbye' and my favourite 'hello'.",
+        "I'll always be on your team."
     ];
 
-    // Loading Bar Logic
+    // Loading Logic
     let prog = 0;
     let stepIndex = 0;
     const loadInt = setInterval(() => {
-        prog += 0.5;
+        prog += 0.6;
         document.getElementById('bar').style.width = prog + "%";
         
-        // Update Status Text
-        if (Math.floor(prog) % 17 === 0 && stepIndex < statusSteps.length - 1) {
+        if (Math.floor(prog) % 25 === 0 && stepIndex < statusSteps.length - 1) {
             stepIndex++;
             document.getElementById('status-text').innerText = statusSteps[stepIndex];
         }
 
-        // Update Quotes
-        if (Math.floor(prog) % 25 === 0) {
-            const qElem = document.getElementById('status-quote');
-            qElem.style.opacity = 0;
-            setTimeout(() => {
-                qElem.innerText = quotes[Math.floor(Math.random()*quotes.length)];
-                qElem.style.opacity = 0.8;
-            }, 500);
-        }
-
         if(prog >= 100) {
             clearInterval(loadInt);
-            setTimeout(() => {
-                document.getElementById('loading-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loading-screen').style.display = 'none';
-                    document.getElementById('main-content').style.display = 'block';
-                    document.getElementById('spotify-sidebar').style.display = 'block';
-                    setTimeout(() => { document.getElementById('main-content').style.opacity = "1"; }, 100);
-                }, 500);
-            }, 800);
+            setTimeout(revealMain, 500);
         }
     }, 40);
+
+    function revealMain() {
+        document.getElementById('loading-screen').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            document.getElementById('spotify-sidebar').style.display = 'block';
+            document.getElementById('top-quote-display').style.opacity = '0.7';
+            setTimeout(() => { document.getElementById('main-content').style.opacity = "1"; }, 100);
+            
+            // Start Quote Rotation at top
+            setInterval(rotateTopQuote, 5000);
+        }, 500);
+    }
+
+    function rotateTopQuote() {
+        const qElem = document.getElementById('top-quote-display');
+        qElem.style.opacity = 0;
+        setTimeout(() => {
+            qElem.innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
+            qElem.style.opacity = 0.7;
+        }, 1500);
+    }
 
     const letterText = `I was just sitting here thinking about everything. The first time i saw you ,its a permanent loop in my head. Ngl my favorite place is being next to you, and favorite memory is every moment we've shared together.\n\n2026 is going to be our year. I don’t just want to look at photos or send digital notes; I want to be there. Keep this note as a reminder that I’m always on your team. Whether it’s a good day, a bad day, or a day where everything feels messy—I’m the one person you never have to worry about losing. My spot next to you is permanent darling.\n\nI'll always love you!!`;
 
     function decryptLetter() {
         document.querySelector('.btn-action[onclick="decryptLetter()"]').style.display = 'none';
         document.getElementById('actual-letter').style.display = 'block';
-        
         let i = 0;
         const type = setInterval(() => {
             if (letterText.charAt(i) === "\n") {
@@ -213,8 +216,8 @@
     }
 
     function startHearts() {
-        for(let i=0; i<20; i++) {
-            setTimeout(createHeart, i * 150);
+        for(let i=0; i<25; i++) {
+            setTimeout(createHeart, i * 120);
         }
     }
 
