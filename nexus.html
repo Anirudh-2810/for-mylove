@@ -67,14 +67,14 @@
 
         #container { text-align: center; width: 90%; max-width: 520px; z-index: 10; position: relative; }
 
-        /* --- Loading Screen --- */
-        #loading-screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        /* --- Loading Screen with Status Messages --- */
+        #loading-screen { width: 100%; display: flex; flex-direction: column; align-items: center; transition: opacity 1s; }
         .system-id { font-size: 0.6rem; letter-spacing: 5px; opacity: 0.5; margin-bottom: 30px; }
-        #status-text { font-size: 0.75rem; font-weight: bold; color: #fff; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
+        #status-text { font-size: 0.75rem; font-weight: bold; color: #fff; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; min-height: 15px; }
         .bar-bg { width: 250px; height: 1px; background: rgba(255,255,255,0.05); position: relative; margin: 20px 0; }
         .bar-fill { width: 0%; height: 100%; background: var(--soft-pink); box-shadow: 0 0 15px var(--soft-pink); transition: width 0.2s; }
 
-        /* --- Content Layout --- */
+        /* --- Main Content --- */
         #main-content { display: none; opacity: 0; transition: opacity 2s ease; width: 100%; }
         .card { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(251, 113, 133, 0.1); border-radius: 20px; padding: 35px; margin-bottom: 25px; text-align: left; }
         .stat-val { font-size: 1.5rem; color: #fff; text-shadow: 0 0 15px var(--glow-pink); }
@@ -87,7 +87,7 @@
         .signature { margin-top: 35px; text-align: right; font-size: 2rem; color: #fff; font-family: 'Dancing Script', cursive; opacity: 0; transition: 2s; }
 
         .floating-heart { position: fixed; bottom: -10%; color: var(--soft-pink); font-size: 24px; pointer-events: none; z-index: 1000; animation: floatUp 4s linear forwards; }
-        @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-115vh) scale(1.5); opacity: 0; } }
+        @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-115vh); opacity: 0; } }
 
         @media (max-width: 900px) { 
             .spotify-card { position: static; transform: none; width: 100%; margin: 30px 0; } 
@@ -140,13 +140,30 @@
 
 <script>
     const start = new Date("2025-09-12T00:00:00").getTime();
+    
+    // Status message rotation
+    const statusSteps = [
+        "Locating favorite person...",
+        "Bypassing distance protocols...",
+        "Synchronizing memories...",
+        "Re-establishing heartbeat sync...",
+        "Nexus Restored."
+    ];
 
-    // Loading Bar Logic
     let prog = 0;
+    let stepIndex = 0;
+    
+    // Loading Bar Logic with Status Updates
     const loadInt = setInterval(() => {
         prog += 0.8;
         document.getElementById('bar').style.width = prog + "%";
         
+        // Update status text based on progress
+        if (Math.floor(prog) % 20 === 0 && stepIndex < statusSteps.length - 1) {
+            stepIndex++;
+            document.getElementById('status-text').innerText = statusSteps[stepIndex];
+        }
+
         if(prog >= 100) {
             clearInterval(loadInt);
             setTimeout(() => {
