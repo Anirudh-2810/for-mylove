@@ -9,122 +9,74 @@
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@300;500&display=swap');
 
         body { 
-            background: #fff5f6; 
+            background: linear-gradient(135deg, #1a0a0c 0%, #450a12 100%); 
             font-family: 'Quicksand', sans-serif;
             overflow: hidden;
+            height: 100vh;
             margin: 0;
         }
 
-        /* Floating Hearts Background */
-        .heart {
-            position: absolute;
-            color: rgba(255, 182, 193, 0.4);
-            font-size: 20px;
-            user-select: none;
-            pointer-events: none;
-            animation: float 10s linear infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
-
         .romantic-box { 
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 192, 203, 0.5);
-            box-shadow: 0 20px 50px rgba(244, 63, 94, 0.1);
+            background: rgba(20, 5, 7, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(251, 113, 133, 0.2);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
         }
 
         .cursive { font-family: 'Dancing Script', cursive; }
 
         input { 
-            background: transparent; 
-            border: none; 
-            outline: none; 
-            color: #be123c; 
-            width: 100%; 
-            text-align: center;
-            font-size: 1.2rem;
-            letter-spacing: 0.1em;
+            background: transparent; border: none; outline: none; 
+            color: #fda4af; width: 100%; text-align: center;
+            font-size: 1.5rem; letter-spacing: 0.2em;
         }
 
-        .heart-beat { animation: beat 1.5s infinite; }
-        @keyframes beat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
+        .glow-heart {
+            color: #fb7185;
+            text-shadow: 0 0 20px #fb7185;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-6">
+<body class="flex items-center justify-center p-6">
 
-    <div id="heart-container"></div>
-
-    <div class="romantic-box p-10 rounded-[2.5rem] max-w-sm w-full text-center relative z-10">
-        <div class="mb-4 text-[11px] uppercase tracking-[0.3em] text-rose-400 font-bold">Encrypted Memory Access</div>
+    <div class="romantic-box p-12 rounded-[3rem] max-w-sm w-full text-center relative z-10">
+        <div class="glow-heart text-4xl mb-6">❤️</div>
+        <h2 class="text-3xl font-bold mb-2 text-rose-200 cursive">Locked with Love</h2>
+        <p class="text-rose-400/60 text-xs mb-10 tracking-widest uppercase">Identity Required</p>
         
-        <div class="flex justify-center mb-6">
-            <span class="heart-beat text-4xl">💖</span>
-        </div>
-
-        <h2 class="text-3xl font-bold mb-2 text-rose-800 cursive">For My Love</h2>
-        <p class="text-sm text-rose-400 mb-8">Please enter the secret number to unlock our story...</p>
-        
-        <div class="border-b-2 border-rose-200 pb-3 mb-8 focus-within:border-rose-500 transition-colors">
+        <div class="border-b border-rose-900/50 pb-3 mb-10">
             <input type="password" id="passkey" placeholder="••••••" autofocus onkeypress="handleEnter(event)">
         </div>
 
-        <button onclick="checkKey()" class="w-full bg-rose-500 text-white py-4 rounded-2xl hover:bg-rose-600 transition-all duration-300 font-bold shadow-lg shadow-rose-200 active:scale-95">
-            Reveal Our Memories
+        <button onclick="checkKey()" class="w-full bg-rose-900/40 border border-rose-500/30 text-rose-200 py-4 rounded-xl hover:bg-rose-500 hover:text-white transition-all duration-500 font-bold tracking-widest text-xs uppercase">
+            Unlock My Heart
         </button>
 
-        <div id="error" class="mt-6 text-rose-500 text-xs hidden italic">
-            "That's not our secret, my love. Try again?"
+        <div id="error" class="mt-6 text-rose-600 text-[10px] hidden uppercase tracking-tighter">
+            Access Denied: That isn't our secret.
         </div>
     </div>
 
     <script>
-        // Create floating hearts background
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
-            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
-            document.getElementById('heart-container').appendChild(heart);
-            
-            setTimeout(() => { heart.remove(); }, 10000);
-        }
-        setInterval(createHeart, 400);
-
-        // Security logic
         function checkKey() {
             const key = document.getElementById('passkey').value;
-            const error = document.getElementById('error');
-            const correctKey = "120925"; 
-
-            if (key === correctKey) {
-                // Smooth transition effect
-                document.body.style.transition = "opacity 0.8s";
+            if (key === "120925") {
+                document.body.style.transition = "all 1s ease";
+                document.body.style.backgroundColor = "#000";
                 document.body.style.opacity = "0";
-                setTimeout(() => {
-                    window.location.href = "nexus.html"; 
-                }, 800);
+                setTimeout(() => { window.location.href = "nexus.html"; }, 1000);
             } else {
-                error.classList.remove('hidden');
+                document.getElementById('error').classList.remove('hidden');
                 document.getElementById('passkey').value = "";
-                // Error shake
-                const box = document.querySelector('.romantic-box');
-                box.classList.add('animate-bounce');
-                setTimeout(() => box.classList.remove('animate-bounce'), 500);
             }
         }
-
-        function handleEnter(e) {
-            if (e.key === 'Enter') checkKey();
-        }
+        function handleEnter(e) { if (e.key === 'Enter') checkKey(); }
     </script>
 </body>
 </html>
