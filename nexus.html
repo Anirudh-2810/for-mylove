@@ -67,7 +67,7 @@
 
         #container { text-align: center; width: 90%; max-width: 520px; z-index: 10; position: relative; }
 
-        /* --- Loading Screen with Status Messages --- */
+        /* --- Loading Screen --- */
         #loading-screen { width: 100%; display: flex; flex-direction: column; align-items: center; transition: opacity 1s; }
         .system-id { font-size: 0.6rem; letter-spacing: 5px; opacity: 0.5; margin-bottom: 30px; }
         #status-text { font-size: 0.75rem; font-weight: bold; color: #fff; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; min-height: 15px; }
@@ -78,6 +78,7 @@
         #main-content { display: none; opacity: 0; transition: opacity 2s ease; width: 100%; }
         .card { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(251, 113, 133, 0.1); border-radius: 20px; padding: 35px; margin-bottom: 25px; text-align: left; }
         .stat-val { font-size: 1.5rem; color: #fff; text-shadow: 0 0 15px var(--glow-pink); }
+        .stat-sub { font-size: 0.7rem; color: #888; margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; }
 
         .btn-action { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--soft-pink); color: var(--soft-pink); padding: 16px; border-radius: 14px; cursor: pointer; font-size: 0.7rem; letter-spacing: 1.5px; transition: 0.4s; font-family: 'Inter', sans-serif; font-weight: 600; text-transform: uppercase; }
         .btn-action:hover { background: var(--soft-pink); color: #000; box-shadow: 0 10px 25px var(--glow-pink); transform: translateY(-2px); }
@@ -119,9 +120,11 @@
 
     <div id="main-content">
         <div style="font-size: 50px; margin-bottom: 25px; filter: drop-shadow(0 0 20px var(--soft-pink));">❤️</div>
+        
         <div class="card">
             <div id="timer" class="stat-val">00d : 00h : 00m : 00s</div>
-            <div style="font-size: 0.75rem; color: #888; margin-top: 15px; letter-spacing: 1px; text-transform: uppercase;">Archive Synchronized</div>
+            <div id="msgs" class="stat-sub">0 Messages Synchronized</div>
+            <div id="calls" class="stat-sub">0 Voice Sessions</div>
         </div>
 
         <div class="card">
@@ -141,29 +144,24 @@
 <script>
     const start = new Date("2025-09-12T00:00:00").getTime();
     
-    // Status message rotation
     const statusSteps = [
         "Locating favorite person...",
         "Bypassing distance protocols...",
         "Synchronizing memories...",
-        "Re-establishing heartbeat sync...",
+        "Recovering Call Logs...",
         "Nexus Restored."
     ];
 
     let prog = 0;
     let stepIndex = 0;
     
-    // Loading Bar Logic with Status Updates
     const loadInt = setInterval(() => {
         prog += 0.8;
         document.getElementById('bar').style.width = prog + "%";
-        
-        // Update status text based on progress
         if (Math.floor(prog) % 20 === 0 && stepIndex < statusSteps.length - 1) {
             stepIndex++;
             document.getElementById('status-text').innerText = statusSteps[stepIndex];
         }
-
         if(prog >= 100) {
             clearInterval(loadInt);
             setTimeout(() => {
@@ -232,11 +230,18 @@
     function update() {
         const now = new Date().getTime();
         const diff = now - start;
+        const mins = diff / (1000 * 60);
+
+        // Timer
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const s = Math.floor((diff % (1000 * 60)) / 1000);
         document.getElementById('timer').innerText = `${d}d : ${h}h : ${m}m : ${s}s`;
+
+        // Records (Dynamic Scaling)
+        document.getElementById('msgs').innerText = Math.floor(mins * 0.45).toLocaleString() + " Messages Synchronized";
+        document.getElementById('calls').innerText = Math.floor(mins * 0.012).toLocaleString() + " Voice Sessions";
     }
     setInterval(update, 1000);
 </script>
