@@ -28,21 +28,22 @@
 
         #container { text-align: center; width: 90%; max-width: 500px; z-index: 10; position: relative; }
 
-        /* --- Top Quote Display (Post-Load) --- */
+        /* --- Top Quote Display (Centered) --- */
         #top-quote-display {
             position: fixed;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
+            top: 40px;
+            left: 0;
+            right: 0;
+            text-align: center;
             font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #fff;
             font-style: italic;
             opacity: 0;
             transition: opacity 1.5s ease;
             letter-spacing: 1px;
             z-index: 100;
+            padding: 0 20px;
         }
 
         /* --- Sophisticated Loading Screen --- */
@@ -52,12 +53,22 @@
         .bar-bg { width: 250px; height: 1px; background: rgba(255,255,255,0.05); position: relative; margin: 20px 0; }
         .bar-fill { width: 0%; height: 100%; background: var(--soft-pink); box-shadow: 0 0 15px var(--soft-pink); transition: width 0.2s; }
         
-        /* --- Spotify Card --- */
+        /* --- Spotify Card (Right-Side Middle) --- */
         .spotify-card {
-            position: fixed; right: 30px; bottom: 30px; /* Moved to bottom right for better layout */
-            width: 240px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 25px;
-            display: none; z-index: 100; transition: 1s ease;
+            position: fixed; 
+            right: 30px; 
+            top: 50%; 
+            transform: translateY(-50%);
+            width: 240px; 
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 20px; 
+            padding: 25px;
+            display: none; 
+            z-index: 100; 
+            transition: 1s ease;
+            text-align: left;
         }
 
         /* --- Main Content --- */
@@ -69,7 +80,6 @@
         .btn-container { display: flex; gap: 12px; margin-top: 20px; }
         .btn-action { flex: 1; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--soft-pink); color: var(--soft-pink); padding: 14px; border-radius: 12px; cursor: pointer; font-size: 0.65rem; letter-spacing: 1px; transition: 0.4s; font-family: 'Inter', sans-serif; font-weight: 600; }
         .btn-action:hover { background: var(--soft-pink); color: #000; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(251, 113, 133, 0.2); }
-        .btn-hearts { border-color: #fff; color: #fff; }
 
         /* --- Letter Styling --- */
         .letter-content { display: none; margin-top: 20px; color: #eee; font-size: 0.95rem; line-height: 1.8; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px; font-family: 'Inter', sans-serif; font-weight: 300; }
@@ -87,20 +97,25 @@
             100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
         }
 
-        @media (max-width: 900px) { .spotify-card { position: static; transform: none; width: 100%; margin: 20px 0; } body { overflow-y: auto; } }
+        /* Mobile Optimization */
+        @media (max-width: 900px) { 
+            .spotify-card { position: static; transform: none; width: 100%; margin: 20px 0; } 
+            body { overflow-y: auto; }
+            #top-quote-display { top: 20px; font-size: 0.75rem; }
+        }
     </style>
 </head>
 <body>
 
-<div id="top-quote-display">"Distance just makes me realise how much of 'me' is 'you'."</div>
+<div id="top-quote-display">"I secretly hope it's you every time my phone rings."</div>
 
 <div id="spotify-sidebar" class="spotify-card">
-    <div style="font-size: 0.5rem; letter-spacing: 2px; color: var(--spotify-green); margin-bottom: 10px;">NOW_PLAYING</div>
-    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; font-size: 0.7rem; color: #eee; border-radius: 10px; margin-bottom: 10px; line-height: 1.4;">
+    <div style="font-size: 0.5rem; letter-spacing: 2px; color: var(--spotify-green); margin-bottom: 10px; font-weight: bold;">LINKED_AUDIO</div>
+    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; font-size: 0.7rem; color: #eee; border-radius: 10px; margin-bottom: 10px; line-height: 1.4; border-left: 2px solid var(--soft-pink);">
         Tanisha, I'm going to miss you!! Always remember you've got a friend in me! Love, Anirudh
     </div>
-    <div style="font-weight: bold; color: #fff; font-size: 0.8rem;">You've got a friend in me</div>
-    <a href="YOUR_SPOTIFY_BLEND_LINK" target="_blank" class="btn-action" style="display:block; text-align:center; text-decoration:none; border-color: var(--spotify-green); color: var(--spotify-green); font-size: 0.6rem; padding: 8px;">OPEN OUR BLEND</a>
+    <div style="font-weight: bold; color: #fff; font-size: 0.8rem; margin-bottom: 15px;">You've got a friend in me</div>
+    <a href="YOUR_SPOTIFY_BLEND_LINK" target="_blank" class="btn-action" style="display:block; text-align:center; text-decoration:none; border-color: var(--spotify-green); color: var(--spotify-green); font-size: 0.6rem; padding: 10px;">OPEN OUR BLEND</a>
 </div>
 
 <div id="container">
@@ -121,7 +136,7 @@
 
         <div class="card">
             <div class="btn-container">
-                <button class="btn-action btn-hearts" onclick="startHearts()">PRESS_FOR_LOVE</button>
+                <button class="btn-action" style="border-color: #fff; color: #fff;" onclick="startHearts()">PRESS_FOR_LOVE</button>
                 <button class="btn-action" onclick="decryptLetter()">OPEN_LETTER</button>
             </div>
             
@@ -140,7 +155,7 @@
     const statusSteps = [
         "Locating favorite person...",
         "Bypassing distance protocols...",
-        "Synchronizing 50,000+ memories...",
+        "Synchronizing memories...",
         "Re-establishing heartbeat sync...",
         "System Restored."
     ];
@@ -154,7 +169,6 @@
         "I'll always be on your team."
     ];
 
-    // Loading Logic
     let prog = 0;
     let stepIndex = 0;
     const loadInt = setInterval(() => {
@@ -180,8 +194,6 @@
             document.getElementById('spotify-sidebar').style.display = 'block';
             document.getElementById('top-quote-display').style.opacity = '0.7';
             setTimeout(() => { document.getElementById('main-content').style.opacity = "1"; }, 100);
-            
-            // Start Quote Rotation at top
             setInterval(rotateTopQuote, 5000);
         }, 500);
     }
