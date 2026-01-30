@@ -67,13 +67,12 @@
 
         #container { text-align: center; width: 90%; max-width: 520px; z-index: 10; position: relative; }
 
-        /* --- Password Logic --- */
-        #pass-screen { display: block; opacity: 1; transition: opacity 1s; }
-        .pass-input { 
-            background: transparent; border: none; border-bottom: 2px solid var(--soft-pink);
-            color: #fff; font-family: 'Courier Prime', monospace; font-size: 1.8rem;
-            text-align: center; width: 180px; outline: none; margin-top: 30px; letter-spacing: 8px;
-        }
+        /* --- Loading Screen --- */
+        #loading-screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .system-id { font-size: 0.6rem; letter-spacing: 5px; opacity: 0.5; margin-bottom: 30px; }
+        #status-text { font-size: 0.75rem; font-weight: bold; color: #fff; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
+        .bar-bg { width: 250px; height: 1px; background: rgba(255,255,255,0.05); position: relative; margin: 20px 0; }
+        .bar-fill { width: 0%; height: 100%; background: var(--soft-pink); box-shadow: 0 0 15px var(--soft-pink); transition: width 0.2s; }
 
         /* --- Content Layout --- */
         #main-content { display: none; opacity: 0; transition: opacity 2s ease; width: 100%; }
@@ -99,7 +98,7 @@
 </head>
 <body>
 
-<div id="top-quote-display">"I secretly hope it's you every time my phone rings."</div>
+<div id="top-quote-display">"Distance just makes me realise how much of 'me' is 'you'."</div>
 
 <div id="spotify-sidebar" class="spotify-card">
     <div style="font-size: 0.55rem; letter-spacing: 3px; color: var(--spotify-green); margin-bottom: 12px; font-weight: bold;">SYNC_AUDIO_STREAM</div>
@@ -112,17 +111,17 @@
 </div>
 
 <div id="container">
-    <div id="pass-screen">
-        <div style="font-size: 0.75rem; letter-spacing: 5px; opacity: 0.6; text-transform: uppercase;">Security Gateway</div>
-        <input type="password" id="passInput" class="pass-input" placeholder="····" maxlength="4" oninput="checkPass()">
-        <div id="error-msg" style="margin-top: 20px; font-size: 0.65rem; color: var(--soft-pink); opacity: 0; letter-spacing: 1px;">AUTHENTICATION_FAILED</div>
+    <div id="loading-screen">
+        <div class="system-id">ANIRUDH_X_TANISHA // V.2026</div>
+        <div id="status-text">INITIALIZING...</div>
+        <div class="bar-bg"><div id="bar" class="bar-fill"></div></div>
     </div>
 
     <div id="main-content">
         <div style="font-size: 50px; margin-bottom: 25px; filter: drop-shadow(0 0 20px var(--soft-pink));">❤️</div>
         <div class="card">
             <div id="timer" class="stat-val">00d : 00h : 00m : 00s</div>
-            <div id="msgs" style="font-size: 0.75rem; color: #888; margin-top: 15px; letter-spacing: 1px; text-transform: uppercase;">Archive Synchronized</div>
+            <div style="font-size: 0.75rem; color: #888; margin-top: 15px; letter-spacing: 1px; text-transform: uppercase;">Archive Synchronized</div>
         </div>
 
         <div class="card">
@@ -141,25 +140,24 @@
 
 <script>
     const start = new Date("2025-09-12T00:00:00").getTime();
-    const correctPass = "1209"; 
 
-    function checkPass() {
-        const input = document.getElementById('passInput').value;
-        if(input === correctPass) {
-            document.getElementById('pass-screen').style.opacity = '0';
+    // Loading Bar Logic
+    let prog = 0;
+    const loadInt = setInterval(() => {
+        prog += 0.8;
+        document.getElementById('bar').style.width = prog + "%";
+        
+        if(prog >= 100) {
+            clearInterval(loadInt);
             setTimeout(() => {
-                document.getElementById('pass-screen').style.display = 'none';
-                revealMain();
-            }, 600);
-        } else if (input.length === 4) {
-            const err = document.getElementById('error-msg');
-            err.style.opacity = '1';
-            setTimeout(() => { 
-                err.style.opacity = '0'; 
-                document.getElementById('passInput').value = ''; 
-            }, 1200);
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    revealMain();
+                }, 600);
+            }, 500);
         }
-    }
+    }, 40);
 
     function revealMain() {
         document.getElementById('main-content').style.display = 'block';
