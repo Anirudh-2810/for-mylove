@@ -163,33 +163,41 @@
         "ENCRYPT_KEY_4096", "LAT_LONG_SCAN", "AUTH_TOKEN_VALID", "DATA_STREAM_OPEN"
     ];
 
-    let prog = 0;
-    let stepIndex = 0;
+   let prog = 0;
 
     const loadInt = setInterval(() => {
-        prog += 0.8; // Speed of the bar
-        document.getElementById('bar').style.width = prog + "%";
+        prog += 0.8; 
         
-        // Cycle through status messages based on progress
-        const currentStep = Math.floor((prog / 100) * statusSteps.length);
-        if (currentStep > stepIndex && currentStep < statusSteps.length) {
-            stepIndex = currentStep;
-            document.getElementById('status-text').innerText = statusSteps[stepIndex];
-            
-            // Randomly update the sub-status for technical "vibe"
+        // Ensure progress doesn't exceed 100 for the bar width
+        const barWidth = Math.min(prog, 100);
+        document.getElementById('bar').style.width = barWidth + "%";
+        
+        // Calculate which message to show based on percentage
+        // This ensures it always cycles through all messages
+        let stepIndex = Math.floor((barWidth / 100) * statusSteps.length);
+        if (stepIndex >= statusSteps.length) stepIndex = statusSteps.length - 1;
+        
+        document.getElementById('status-text').innerText = statusSteps[stepIndex];
+
+        // Randomly flicker the sub-status jargon
+        if (Math.random() > 0.8) {
             document.getElementById('sub-status').innerText = subSteps[Math.floor(Math.random() * subSteps.length)];
         }
 
+        // Trigger completion
         if(prog >= 100) {
             clearInterval(loadInt);
             document.getElementById('status-text').innerText = "NEXUS_RESTORED";
             document.getElementById('sub-status').innerText = "CONNECTION_STABLE";
             
+            // Short delay so they see the "Restored" message
             setTimeout(() => {
-                document.getElementById('loading-screen').style.opacity = '0';
+                const loader = document.getElementById('loading-screen');
+                loader.style.opacity = '0';
+                
                 setTimeout(() => {
-                    document.getElementById('loading-screen').style.display = 'none';
-                    revealMain();
+                    loader.style.display = 'none';
+                    revealMain(); // This launches your main dashboard
                 }, 600);
             }, 800);
         }
