@@ -114,8 +114,11 @@
 <div id="container">
     <div id="loading-screen">
         <div class="system-id">ANIRUDH_X_TANISHA // V.2026</div>
-        <div id="status-text">INITIALIZING...</div>
-        <div class="bar-bg"><div id="bar" class="bar-fill"></div></div>
+        <div id="status-text" style="height: 20px;">INITIALIZING_CORE...</div>
+        <div class="bar-bg">
+            <div id="bar" class="bar-fill"></div>
+        </div>
+        <div id="sub-status" style="font-size: 0.5rem; color: #555; letter-spacing: 2px; margin-top: 10px;">SECURE_HANDSHAKE_PENDING</div>
     </div>
 
     <div id="main-content">
@@ -142,6 +145,55 @@
 </div>
 
 <script>
+    // Enhanced status sequence for a more realistic feel
+    const statusSteps = [
+        "Initializing Core...",
+        "Establishing Secure Handshake...",
+        "Locating Favorite Person...",
+        "Bypassing Distance Protocols...",
+        "Accessing Archive_2025_09_12...",
+        "Synchronizing Heartbeat Sync...",
+        "Recovering Call Logs...",
+        "Decrypting Voice Sessions...",
+        "Optimizing Memory Cache...",
+        "Finalizing Link..."
+    ];
+
+    const subSteps = [
+        "ENCRYPT_KEY_4096", "LAT_LONG_SCAN", "AUTH_TOKEN_VALID", "DATA_STREAM_OPEN"
+    ];
+
+    let prog = 0;
+    let stepIndex = 0;
+
+    const loadInt = setInterval(() => {
+        prog += 0.8; // Speed of the bar
+        document.getElementById('bar').style.width = prog + "%";
+        
+        // Cycle through status messages based on progress
+        const currentStep = Math.floor((prog / 100) * statusSteps.length);
+        if (currentStep > stepIndex && currentStep < statusSteps.length) {
+            stepIndex = currentStep;
+            document.getElementById('status-text').innerText = statusSteps[stepIndex];
+            
+            // Randomly update the sub-status for technical "vibe"
+            document.getElementById('sub-status').innerText = subSteps[Math.floor(Math.random() * subSteps.length)];
+        }
+
+        if(prog >= 100) {
+            clearInterval(loadInt);
+            document.getElementById('status-text').innerText = "NEXUS_RESTORED";
+            document.getElementById('sub-status').innerText = "CONNECTION_STABLE";
+            
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    revealMain();
+                }, 600);
+            }, 800);
+        }
+    }, 50);
     const start = new Date("2025-09-12T00:00:00").getTime();
     
     const statusSteps = [
